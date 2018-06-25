@@ -10,7 +10,8 @@ const app = express();
 app.use(express.static('public'));
 
 app.get('/api/notes', (req, res) => {
-  res.json(data);
+  const { searchTerm } = req.query;
+  res.json(searchTerm ? data.filter(item => item.title.includes(searchTerm)) : data);
 });
 
 app.get('/api/notes/:id', (req, res) => {
