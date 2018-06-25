@@ -14,8 +14,8 @@ app.get('/api/notes', (req, res) => {
 });
 
 app.get('/api/notes/:id', (req, res) => {
-  const id = req.params;
-  res.json(data[id]);
+  const id = req.params.id;
+  res.json(data.find(note => note.id === Number(id)));
 });
 
 app.listen(8080, function () {
