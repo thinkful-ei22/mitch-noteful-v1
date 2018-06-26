@@ -30,7 +30,18 @@ app.get('/api/notes', (req, res, next) => {
 
 app.get('/api/notes/:id/', (req, res) => {
   const id = req.params.id;
-  res.json(data.find(note => note.id === Number(id)));
+
+  notes.find(id, (err, item) => {
+    if (err) {
+      console.error(err);
+    }
+    if (item) {
+      res.json(item);
+    } else {
+      console.log('not found');
+    }
+  });
+  //res.json(data.find(note => note.id === Number(id)));
 });
 
 app.get('/boom', (req, res, next) => {
