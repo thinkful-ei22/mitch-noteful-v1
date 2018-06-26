@@ -4,6 +4,9 @@
 const express = require('express');
 // Load array of notes
 const data = require('./db/notes');
+// Simple In-Memory Database
+const simDB = require('./db/simDB');  // <<== add this
+const notes = simDB.initialize(data); // <<== and this
 // Initialize express app
 const app = express();
 // Require config.js and create a variable for PORT using object descructuring
