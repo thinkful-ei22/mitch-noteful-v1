@@ -8,8 +8,11 @@ const data = require('./db/notes');
 const app = express();
 // Require config.js and create a variable for PORT using object descructuring
 const { PORT } = require('./config');
+const { requestLogger } = require('./middleware/logger');
+
 
 app.use(express.static('public'));
+app.use(requestLogger);
 
 app.get('/api/notes', (req, res) => {
   const { searchTerm } = req.query;
