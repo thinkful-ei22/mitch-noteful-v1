@@ -6,6 +6,8 @@ const express = require('express');
 const data = require('./db/notes');
 // Initialize express app
 const app = express();
+// Require config.js and create a variable for PORT using object descructuring
+const { PORT } = require('./config');
 
 app.use(express.static('public'));
 
@@ -19,7 +21,7 @@ app.get('/api/notes/:id', (req, res) => {
   res.json(data.find(note => note.id === Number(id)));
 });
 
-app.listen(8080, function () {
+app.listen(PORT, function () {
   console.info(`Server listening on ${this.address().port}`);
 }).on('error', err => {
   console.error(err);
