@@ -72,7 +72,7 @@ router.put('/notes/:id', (req, res, next) => {
   });
 });
 
-// Post (insert) an item
+// POST (insert) a note
 router.post('/notes', (req, res, next) => {
   const { title, content } = req.body;
   const newItem = { title, content };
@@ -82,6 +82,7 @@ router.post('/notes', (req, res, next) => {
     err.status = 400;
     return next(err);
   }
+
   // Create new note
   notes.create(newItem, (err, item) => {
     if (err) {
@@ -93,6 +94,22 @@ router.post('/notes', (req, res, next) => {
       next();
     }
   });
+});
+
+// DELETE a note
+router.delete('/notes/:id', (req, res, next) => {
+  const id = req.params.id;
+  // The real note deleting function
+  notes.delete(id, err => {
+    if (err) {
+      return next(err);
+    }
+    else {
+      res.sendStatus(204);
+    }
+
+  });
+
 });
 
 module.exports = router;
