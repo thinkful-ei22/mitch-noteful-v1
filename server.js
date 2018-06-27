@@ -2,6 +2,8 @@
 
 // Load express
 const express = require('express');
+// Load morgan to configure routes
+const morgan = require('morgan');
 // Load array of notes
 const data = require('./db/notes');
 // Simple In-Memory Database
@@ -18,6 +20,8 @@ app.use(express.static('public'));
 app.use(express.json());
 // Log all requests
 app.use(requestLogger);
+// Use dexter morgan
+app.use(morgan('dev'));
 
 app.get('/api/notes', (req, res, next) => {
   const { searchTerm } = req.query;
