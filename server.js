@@ -2,7 +2,7 @@
 
 // Load express
 const express = require('express');
-// Load morgan to configure routes
+// Load morgan to log requests
 const morgan = require('morgan');
 // Load array of notes
 const data = require('./db/notes');
