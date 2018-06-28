@@ -1,5 +1,4 @@
 'use strict';
-
 // Load/Require Express
 const express = require('express');
 // Create a Router
@@ -9,11 +8,9 @@ const data = require('./../db/notes');
 // Simple In-Memory Database
 const simDB = require('./../db/simDB');
 const notes = simDB.initialize(data); 
-
 // GET list of all notes
 router.get('/notes', (req, res, next) => {
   const { searchTerm } = req.query;
-
   // Filter a list of notes
   notes.filter(searchTerm) 
     .then(list => {
@@ -27,11 +24,9 @@ router.get('/notes', (req, res, next) => {
       next(err);
     });
 });
-
 // GET one note by id
 router.get('/notes/:id', (req, res, next) => {
   const id = req.params.id;
-
   // Find a note
   notes.find(id)
     .then(item => {
@@ -45,7 +40,6 @@ router.get('/notes/:id', (req, res, next) => {
       next(err);
     });
 });
-
 // GET BOOM! for fun
 router.get('/boom', (req, res, next) => {
   let err = new Error('I\'m a teapot');
@@ -53,11 +47,9 @@ router.get('/boom', (req, res, next) => {
   res.status(418).json({ message: 'I\'m a teapot'});
   throw new Error('Boom!!');
 });
-
 // PUT to update an item
 router.put('/notes/:id', (req, res, next) => {
   const id = req.params.id;
-
   /***** Never trust users - validate input *****/
   const updateObj = {};
   const updateFields = ['title', 'content'];
@@ -67,7 +59,6 @@ router.put('/notes/:id', (req, res, next) => {
       updateObj[field] = req.body[field];
     }
   });
-
   // Update a note's content
   notes.update(id, updateObj)
     .then(item => {
@@ -81,7 +72,6 @@ router.put('/notes/:id', (req, res, next) => {
       next(err);
     });
 });
-
 // POST (insert) a note
 router.post('/notes', (req, res, next) => {
   const { title, content } = req.body;
@@ -92,7 +82,6 @@ router.post('/notes', (req, res, next) => {
     err.status = 400;
     return next(err);
   }
-
   // Create new note
   notes.create(newItem)
     .then(item => {
@@ -106,19 +95,14 @@ router.post('/notes', (req, res, next) => {
       next(err);
     });
 });
-
 // DELETE a note
 router.delete('/notes/:id', (req, res, next) => {
   const id = req.params.id;
   // The real note deleting function
-  notes.delete(id, err => {
-    if (err) {
-      return next(err);
-    }
-    else {
-      res.sendStatus(204);
-    }
-  });
+  notes.delete(id)
+    .then(res.sendStatus(204))
+    .catch(err => {
+      next(err);
+    });
 });
-
 module.exports = router;
