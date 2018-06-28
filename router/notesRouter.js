@@ -14,6 +14,7 @@ const notes = simDB.initialize(data);
 router.get('/notes', (req, res, next) => {
   const { searchTerm } = req.query;
 
+  // Filter a list of notes
   notes.filter(searchTerm) 
     .then(list => {
       if (list) {
@@ -31,6 +32,7 @@ router.get('/notes', (req, res, next) => {
 router.get('/notes/:id', (req, res, next) => {
   const id = req.params.id;
 
+  // Find a note
   notes.find(id)
     .then(item => {
       if (item) {
@@ -66,6 +68,7 @@ router.put('/notes/:id', (req, res, next) => {
     }
   });
 
+  // Update a note's content
   notes.update(id, updateObj)
     .then(item => {
       if (item) {
@@ -91,16 +94,17 @@ router.post('/notes', (req, res, next) => {
   }
 
   // Create new note
-  notes.create(newItem, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
-      res.location(`http://${req.headers.host}/notes/${item.id}`).status(201).json(item);
-    } else {
-      next();
-    }
-  });
+  notes.create(newItem)
+    .then(item => {
+      if(item) {
+        res.location(`http://${req.headers.host}/notes/${item.id}`).status(201).json(item);
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 
 // DELETE a note
