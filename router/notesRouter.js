@@ -107,9 +107,7 @@ router.delete('/notes/:id', (req, res, next) => {
     else {
       res.sendStatus(204);
     }
-
   });
-
 });
 
 module.exports = router;
