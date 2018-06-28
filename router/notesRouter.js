@@ -23,17 +23,17 @@ router.get('/notes', (req, res, next) => {
 });
 
 // GET one note by id
-router.get('/notes/:id', (req, res) => {
+router.get('/notes/:id', (req, res, next) => {
   const id = req.params.id;
 
   notes.find(id, (err, item) => {
     if (err) {
-      console.error(err);
+      return next(err);
     }
     if (item) {
       res.json(item);
     } else {
-      console.log('not found');
+      next();
     }
   });
 });
