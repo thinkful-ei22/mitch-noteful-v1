@@ -8,16 +8,12 @@ const morgan = require('morgan');
 const app = express();
 // Require config.js and create a variable for PORT using object descructuring
 const { PORT } = require('./config');
-// Mount homemade logger, to be replaced by morgan
-// const { requestLogger } = require('./middleware/logger');
 // Mount a router
 const notesRouter = require('./router/notesRouter');
 // Create a static webserver
 app.use(express.static('public'));
 // Parse request body
 app.use(express.json());
-// Log all requests
-// app.use(requestLogger);
 // Use dexter morgan
 app.use(morgan('dev'));
 
@@ -37,12 +33,13 @@ app.use(function (err, req, res, next) {
   });
 });
 
-app.listen(PORT, function () {
-  console.info(`Server listening on ${this.address().port}`);
-}).on('error', err => {
-  console.error(err);
-});
+if (require.main === module) {
+  app.listen(PORT, function () {
+    console.info(`Server listening on ${this.address().port}`);
+  }).on('error', err => {
+    console.error(err);
+  });
+}
 
+module.exports = app;
 console.log('Hello Noteful!');
-
-// INSERT EXPRESS APP CODE HERE...
