@@ -14,9 +14,10 @@ const notesRouter = require('./router/notesRouter');
 app.use(express.static('public'));
 // Parse request body
 app.use(express.json());
-// Use dexter morgan
-app.use(morgan('dev'));
-
+// Use morgan to log http requests
+if (process.env.NODE_ENV !== 'test'){
+  app.use(morgan('dev'));
+}
 app.use('/api', notesRouter);
 
 app.use(function (req, res, next) {
