@@ -135,9 +135,16 @@ describe('PUT /api/notes/:id', function () {
       .put('/api/notes/1006')
       .send(data)
       .then(res => {
-        expect(res);
+        expect(res.body.message).to.equal('Missing `title` in request body');
       });
   });
 });
 describe('DELETE /api/notes/:id', function () {
+  it('should delete an item by id', function () {
+    return chai.request(app)
+      .delete('/api/notes/1007')
+      .then(res => {
+        expect(res.body).to.be.empty;
+      });
+  });
 });
