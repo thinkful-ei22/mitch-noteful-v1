@@ -53,7 +53,6 @@ router.put('/notes/:id', (req, res, next) => {
   /***** Never trust users - validate input *****/
   const updateObj = {};
   const updateFields = ['title', 'content'];
-
   updateFields.forEach(field => {
     if (field in req.body) {
       updateObj[field] = req.body[field];
